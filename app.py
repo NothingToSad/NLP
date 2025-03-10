@@ -9,6 +9,8 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 from transformers import T5Tokenizer, AutoModelForSeq2SeqLM
 from docx import Document
+from flask import g
+import mysql.connector
 
 # ✅ Set Full Path for Templates
 TEMPLATE_DIR = r"E:\NLP\templates"  # Full path to your template directory
@@ -33,12 +35,11 @@ summary_model = AutoModelForSeq2SeqLM.from_pretrained("csebuetnlp/mT5_multilingu
 def get_db():
     if 'db' not in g:
         g.db = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="",
-            database="knowledge_base",
-            pool_name="mypool",
-            pool_size=5
+            host=os.getenv("DB_HOST", "127.0.0.1"),
+            user=os.getenv("DB_USER", "root"),
+            password=os.getenv("DB_PASS", ""),  # ใช้ค่าว่างถ้าไม่มีรหัส
+            database=os.getenv("DB_NAME", "knowledge_base"),
+            port=int(os.getenv("DB_PORT", 3306)),  # Default = 3306
         )
     return g.db
 
