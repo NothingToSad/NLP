@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Corporate Knowledge Base</title>
+
+  <!-- FontAwesome (for icons) & Axios -->
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <style>
+    /* ------------------------------------ */
+    /* ✅ Reset Styles */
+    /* ------------------------------------ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    /* ------------------------------------ */
+    /* ✅ Global Styles */
+    /* ------------------------------------ */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f8fc;
+      color: #333;
+      line-height: 1.6;
+    }
+
+    /* ------------------------------------ */
+    /* ✅ Navigation Bar */
+    /* ------------------------------------ */
+    .navbar {
+      background: linear-gradient(135deg, #0056b3, #003f7f);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 1rem;
+      padding: 8px 15px;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* ------------------------------------ */
+    /* ✅ Header */
+    /* ------------------------------------ */
+    header {
+      text-align: center;
+      padding: 40px 20px;
+      color: #fff;
+      background: linear-gradient(135deg, #0056b3, #003f7f);
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+
+    /* ------------------------------------ */
+    /* ✅ Search & Upload Section */
+    /* ------------------------------------ */
+    .search-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    .search-container input[type="text"] {
+      width: 50%;
+      max-width: 500px;
+      padding: 12px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    .search-container button {
+      padding: 12px 20px;
+      background-color: #ffcc00;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-container button:hover {
+      background-color: #e6b800;
+    }
+
+    #fileInput {
+      display: none; /* hidden input for file uploads */
+    }
+
+    /* ------------------------------------ */
+    /* ✅ Results Section (Main Container) */
+    /* ------------------------------------ */
+    .results-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 40px;
+    }
+
+    /* ------------------------------------ */
+    /* ✅ Organized Knowledge Base Section */
+    /* ------------------------------------ */
+    .results-section {
+      width: 40%;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .results-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #0056b3;
+    }
+
+    .results-section ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .results-section li {
+      background: #eef4fc;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    /* ------------------------------------ */
+    /* ✅ Modernized Analytics & Reports */
+    /* ------------------------------------ */
+    .analytics-reports {
+      width: 50%;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .analytics-reports h2 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      color: #0056b3;
+      text-align: center;
+    }
+
+    .report-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .report-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .report-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #0056b3;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .report-title i {
+      font-size: 1.3rem;
+      color: #ff5722;
+    }
+
+    .report-summary {
+      font-size: 0.95rem;
+      color: #555;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ------------------------------------ */
+    /* ✅ Mobile Responsive */
+    /* ------------------------------------ */
+    @media (max-width: 768px) {
+      .search-container {
+        flex-direction: column;
+      }
+
+      .search-container input[type="text"] {
+        width: 80%;
+      }
+
+      .results-section,
+      .analytics-reports {
+        width: 90%;
+      }
+    }
+  </style>
+
+</head>
+
+<body>
+  <!-- ✅ Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">📘 Knowledge Base</div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Upload</a>
+      <a href="#">Search</a>
+      <a href="#">Analytics</a>
+    </div>
+  </nav>
+
+  <!-- ✅ Header -->
+  <header>
+    <h1>Corporate Knowledge Base</h1>
+    <p>AI-powered search for company policies, HR documents, and project reports</p>
+    <div class="search-container">
+      <!-- Search field -->
+      <input type="text" id="searchQuery" placeholder="Search for policies, reports, or HR information...">
+      <!-- Search button -->
+      <button onclick="performSearch()">🔍 Search</button>
+      <!-- Upload button & hidden file input -->
+      <button onclick="document.getElementById('fileInput').click()">📂 Upload PDF</button>
+      <input type="file" id="fileInput" accept="application/pdf" onchange="handleFileUpload(event)">
+    </div>
+  </header>
+
+  <!-- ✅ Results Section -->
+  <section class="results-container">
+    <!-- Organized Knowledge Base -->
+    <div class="results-section">
+      <h2>📂 Organized Knowledge Base</h2>
+      <ul id="uploadedFiles">
+        <li>No files uploaded yet.</li>
+      </ul>
+    </div>
+
+    <!-- Modernized Analytics & Reports -->
+    <div class="analytics-reports">
+      <h2>📊 Analytics & Reports</h2>
+      <div id="reportsContainer"></div>
+    </div>
+  </section>
+
+  <!-- ✅ JavaScript Logic -->
+  <script>
+    // Handle file upload
+    function handleFileUpload(event) {
+      let file = event.target.files[0];
+      let formData = new FormData();
+      formData.append("file", file);
+
+      axios.post("http://localhost:5500/upload", formData)
+        .then(() => {
+          alert("File uploaded successfully!");
+          fetchDocuments();
+        })
+        .catch(err => {
+          console.error(err);
+          alert("❌ File upload failed.");
+        });
+    }
+
+    // Perform search and display results
+    function performSearch() {
+      let query = document.getElementById("searchQuery").value;
+
+      axios.post("http://localhost:5500/search", { query: query })
+        .then(response => {
+          let reportsContainer = document.getElementById("reportsContainer");
+          reportsContainer.innerHTML = "";
+
+          // Map each result to a "report card"
+          response.data.forEach(result => {
+            let reportHTML = `
+              <div class="report-card">
+                <h3 class="report-title"><i class="fas fa-file-alt"></i> ${result.filename}</h3>
+                <p class="report-summary">${result.summary}</p>
+              </div>
+            `;
+            reportsContainer.innerHTML += reportHTML;
+          });
+        })
+        .catch(error => {
+          console.error("Search Error:", error);
+          alert("Failed to retrieve search results.");
+        });
+    }
+
+    // Fetch list of uploaded documents
+    function fetchDocuments() {
+      axios.get("http://localhost:5500/documents")
+        .then(response => {
+          let uploadedFiles = document.getElementById("uploadedFiles");
+          let docs = response.data;
+          if (docs.length === 0) {
+            uploadedFiles.innerHTML = "<li>No files uploaded yet.</li>";
+          } else {
+            // Display each doc in a <li>
+            uploadedFiles.innerHTML = docs.map(doc => `
+              <li>📄 ${doc.filename}</li>
+            `).join("");
+          }
+        })
+        .catch(err => {
+          console.error("Error fetching documents:", err);
+          alert("Failed to load document list.");
+        });
+    }
+
+    // On page load, fetch documents
+    window.onload = fetchDocuments;
+  </script>
+</body>
+</html>
