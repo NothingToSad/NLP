@@ -1,16 +1,10 @@
-torch
-transformers
-sentencepiece
-pdfplumber
-python-docx
-scikit-learn
-numpy
 altair==5.5.0
 attrs==25.1.0
 blinker==1.9.0
 cachetools==5.5.2
 certifi==2025.1.31
 cffi==1.17.1
+chardet==5.2.0
 charset-normalizer==3.4.1
 click==8.1.8
 colorama==0.4.6
@@ -30,6 +24,7 @@ Jinja2==3.1.5
 joblib==1.4.2
 jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
+langdetect==1.0.9
 lxml==5.3.1
 markdown-it-py==3.0.0
 MarkupSafe==3.0.2
@@ -46,7 +41,6 @@ pandas==2.2.3
 pdfminer.six==20231228
 pdfplumber==0.11.5
 pillow==11.1.0
-pip==24.0
 protobuf==5.29.3
 pyarrow==19.0.1
 pycparser==2.22
@@ -57,6 +51,7 @@ python-dateutil==2.9.0.post0
 python-docx==1.1.2
 pytz==2025.1
 PyYAML==6.0.2
+RapidFuzz==3.12.2
 referencing==0.36.2
 regex==2024.11.6
 requests==2.32.3
