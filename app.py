@@ -35,11 +35,11 @@ summary_model = AutoModelForSeq2SeqLM.from_pretrained("csebuetnlp/mT5_multilingu
 def get_db():
     if 'db' not in g:
         g.db = mysql.connector.connect(
-            host=os.getenv("DB_HOST", "127.0.0.1"),
-            user=os.getenv("DB_USER", "root"),
-            password=os.getenv("DB_PASS", ""),  # ใช้ค่าว่างถ้าไม่มีรหัส
-            database=os.getenv("DB_NAME", "knowledge_base"),
-            port=int(os.getenv("DB_PORT", 3306)),  # Default = 3306
+            host=os.environ.get("DB_HOST", "127.0.0.1"),
+            user=os.environ.get("DB_USER", "root"),
+            password=os.environ.get("DB_PASS", ""),  # ใช้ค่าว่างถ้าไม่มีรหัส
+            database=os.environ.get("DB_NAME", "knowledge_base"),
+            port=int(os.environ.get("DB_PORT", 3306)),  # Default = 3306
         )
     return g.db
 
